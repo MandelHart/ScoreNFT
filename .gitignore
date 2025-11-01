@@ -1,0 +1,39 @@
+﻿# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+*.log
+logs/
+
+# Node
+node_modules/
+**/node_modules/
+
+# Builds
+build/
+dist/
+coverage/
+
+# Next.js
+.next/
+out/
+frontend/.next/
+frontend/out/
+
+# Hardhat
+backend/artifacts/
+backend/cache/
+backend/deployments/sepolia/.chainId
+
+# GitHub
+.github/
+
+# Vercel
+.vercel/
+
+# Misc
+*.tmp
+*.swp
