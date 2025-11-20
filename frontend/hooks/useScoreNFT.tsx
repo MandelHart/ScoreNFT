@@ -423,7 +423,7 @@ export const useScoreNFT = (parameters: {
 
           const decryptedValue: ClearValueType = {
             handle: thisScoreHandle,
-            clear: res[thisScoreHandle],
+            clear: (res as Record<string, string | bigint | boolean>)[thisScoreHandle],
           };
 
           // Update NFT data
@@ -537,7 +537,7 @@ export const useScoreNFT = (parameters: {
 
           const decryptedValue: ClearValueType = {
             handle: thisPassStatusHandle,
-            clear: res[thisPassStatusHandle],
+            clear: (res as Record<string, string | bigint | boolean>)[thisPassStatusHandle],
           };
 
           // Update NFT data
