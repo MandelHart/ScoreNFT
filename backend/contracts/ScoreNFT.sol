@@ -2,14 +2,14 @@
 pragma solidity ^0.8.24;
 
 import {FHE, euint32, externalEuint32, ebool} from "@fhevm/solidity/lib/FHE.sol";
-import {SepoliaConfig} from "@fhevm/solidity/config/ZamaConfig.sol";
+import {ZamaEthereumConfig} from "@fhevm/solidity/config/ZamaConfig.sol";
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {ERC721URIStorage} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 /// @title ScoreNFT - A privacy-preserving quiz scoring system with NFT generation
 /// @notice This contract uses FHEVM to encrypt student scores and mint NFTs
-contract ScoreNFT is SepoliaConfig, ERC721URIStorage, Ownable {
+contract ScoreNFT is ZamaEthereumConfig, ERC721URIStorage, Ownable {
     // Token ID counter
     uint256 private _tokenIdCounter;
     

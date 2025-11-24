@@ -28,9 +28,6 @@ backend/artifacts/
 backend/cache/
 backend/deployments/sepolia/.chainId
 
-# GitHub
-.github/
-
 # Vercel
 .vercel/
 

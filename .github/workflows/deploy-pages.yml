@@ -1,0 +1,76 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Generate ABI
+        working-directory: ./frontend
+        run: npm run genabi
+
+      - name: Calculate basePath
+        id: basepath
+        run: |
+          REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f2)
+          USERNAME=$(echo "${{ github.repository }}" | cut -d'/' -f1)
+          
+          if [ "$REPO_NAME" = "${USERNAME}.github.io" ]; then
+            echo "basePath=" >> $GITHUB_OUTPUT
+          else
+            echo "basePath=/$REPO_NAME" >> $GITHUB_OUTPUT
+          fi
+          
+          echo "Repository: ${{ github.repository }}"
+          echo "Repo Name: $REPO_NAME"
+          echo "Username: $USERNAME"
+          echo "Base Path: ${{ steps.basepath.outputs.basePath }}"
+
+      - name: Build
+        working-directory: ./frontend
+        env:
+          NEXT_PUBLIC_STATIC_EXPORT: "true"
+          NEXT_PUBLIC_BASE_PATH: ${{ steps.basepath.outputs.basePath }}
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './frontend/out'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
